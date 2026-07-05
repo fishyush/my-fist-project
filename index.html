@@ -3,489 +3,1062 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MECCA CHAMELEON Strategy Guide — Painter & Hunter tips, pose guide, map hotspots, keybinds, game modes">
-    <title>MECCA CHAMELEON · Strategy Guide</title>
+    <meta name="description" content="MECCA CHAMELEON Pro Strategy Guide — Tier lists, interactive maps, pose meta, advanced tactics. No ads, no fluff.">
+    <meta property="og:title" content="MECCA CHAMELEON · Pro Guide">
+    <meta property="og:description" content="Tier lists, interactive maps, pose meta. The last guide you'll need.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>MECCA CHAMELEON · Pro Strategy Guide</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦎</text></svg>">
     <style>
+        /* ============================================
+           MECCA CHAMELEON · Pro Strategy Guide
+           Premium Design System v2.0
+           ============================================ */
+
         :root {
-            --bg: #0F0F14;
-            --surface: #1A1A24;
-            --surface2: #222230;
-            --border: #2A2A3A;
-            --text: #E8E8EE;
-            --text2: #9090A0;
-            --text3: #606070;
+            --bg: #08080F;
+            --bg-alt: #0D0D18;
+            --surface: #131320;
+            --surface-hover: #1A1A2E;
+            --border: #1E1E35;
+            --border-light: #2A2A45;
+            --text: #EAEAF0;
+            --text-secondary: #8E8EA8;
+            --text-tertiary: #5C5C78;
             --paint: #00E676;
-            --paint-glow: #00E67666;
+            --paint-dim: #00C853;
+            --paint-glow: rgba(0,230,118,0.25);
             --hunter: #FF5252;
-            --hunter-glow: #FF525266;
+            --hunter-glow: rgba(255,82,82,0.25);
             --gold: #FFD740;
-            --blue: #448AFF;
-            --purple: #B388FF;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --gold-dim: #FFC400;
+            --platinum: #B388FF;
+            --diamond: #40C4FF;
+            --tier-s: #FF6D00;
+            --tier-a: #FFD740;
+            --tier-b: #69F0AE;
+            --tier-c: #90A4AE;
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow: 0 4px 24px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+            --transition-fast: 0.15s cubic-bezier(0.4,0,0.2,1);
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+            --transition-slow: 0.5s cubic-bezier(0.4,0,0.2,1);
+            --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
+            --font-mono: "SF Mono", "JetBrains Mono", "Consolas", monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: var(--font);
             background: var(--bg);
             color: var(--text);
-            line-height: 1.5;
-            min-height: 100vh;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* ===== Navigation ===== */
-        .nav {
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(15,15,20,0.88);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        /* ===== Canvas Background ===== */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.4;
+        }
+
+        /* ===== Layout Wrapper ===== */
+        .app-layout {
+            position: relative; z-index: 1;
+            display: flex; max-width: 1400px; margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        /* ===== Sidebar ===== */
+        .sidebar {
+            position: sticky; top: 0;
+            width: 220px; min-width: 220px; height: 100vh;
+            padding: 24px 16px;
+            border-right: 1px solid var(--border);
+            background: rgba(13,13,24,0.7);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            display: flex; flex-direction: column; gap: 6px;
+            z-index: 50;
+        }
+        .sidebar-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 800; font-size: 0.95rem; color: var(--text);
+            padding: 8px 12px; margin-bottom: 16px; text-decoration: none;
+        }
+        .sidebar-logo span { font-size: 1.5rem; }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: var(--radius-sm);
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; transition: var(--transition-fast);
+            position: relative;
+        }
+        .sidebar-link:hover { background: var(--surface); color: var(--text); }
+        .sidebar-link.active { background: var(--surface); color: var(--text); }
+        .sidebar-link .badge {
+            margin-left: auto; font-size: 0.68rem; padding: 2px 7px; border-radius: 6px;
+            font-weight: 600;
+        }
+        .badge-new { background: rgba(255,82,82,0.15); color: var(--hunter); }
+        .badge-hot { background: rgba(255,109,0,0.15); color: var(--tier-s); }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            flex: 1; min-width: 0; padding-bottom: 80px;
+        }
+
+        /* ===== Top Bar ===== */
+        .topbar {
+            position: sticky; top: 0; z-index: 40;
+            background: rgba(8,8,15,0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border);
-            padding: 0 20px;
+            padding: 0 32px; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px;
         }
-        .nav-inner {
-            max-width: 1100px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: space-between; height: 60px;
+        .topbar-title { font-weight: 700; font-size: 0.9rem; color: var(--text); display: flex; align-items: center; gap: 6px; }
+        .topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+        /* Role Pill */
+        .role-pill {
+            display: inline-flex; background: var(--surface); border-radius: 24px;
+            padding: 3px; border: 1px solid var(--border); gap: 2px;
         }
-        .nav-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; }
-        .nav-logo span { font-size: 1.5rem; }
-        .nav-links { display: flex; gap: 4px; list-style: none; }
-        .nav-links a {
-            text-decoration: none; color: var(--text2); padding: 6px 14px;
-            border-radius: 20px; font-size: 0.85rem; font-weight: 500; transition: var(--transition);
+        .role-pill button {
+            padding: 7px 18px; border-radius: 22px; border: none; cursor: pointer;
+            font-size: 0.82rem; font-weight: 600; transition: var(--transition);
+            background: transparent; color: var(--text-secondary); white-space: nowrap;
+            font-family: var(--font);
         }
-        .nav-links a:hover { background: var(--surface2); color: var(--text); }
-        .menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+        .role-pill button.active-painter {
+            background: rgba(0,230,118,0.12); color: var(--paint); box-shadow: 0 0 16px var(--paint-glow);
+        }
+        .role-pill button.active-hunter {
+            background: rgba(255,82,82,0.12); color: var(--hunter); box-shadow: 0 0 16px var(--hunter-glow);
+        }
+
+        /* Search */
+        .search-wrap {
+            position: relative; display: flex; align-items: center;
+        }
+        .search-wrap input {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+            padding: 8px 16px 8px 36px; font-size: 0.82rem; color: var(--text);
+            width: 180px; transition: var(--transition); outline: none; font-family: var(--font);
+        }
+        .search-wrap input:focus { border-color: var(--border-light); width: 220px; }
+        .search-wrap input::placeholder { color: var(--text-tertiary); }
+        .search-wrap .search-icon {
+            position: absolute; left: 12px; font-size: 0.8rem; color: var(--text-tertiary); pointer-events: none;
+        }
+
+        .btn-icon {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 8px 12px; cursor: pointer; color: var(--text-secondary); font-size: 0.85rem;
+            transition: var(--transition-fast); font-family: var(--font); white-space: nowrap;
+            display: flex; align-items: center; gap: 6px; text-decoration: none;
+        }
+        .btn-icon:hover { background: var(--surface-hover); color: var(--text); }
+        .btn-primary {
+            background: var(--paint-dim); border: none; color: #000;
+            font-weight: 700; padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            font-size: 0.82rem; transition: var(--transition); font-family: var(--font);
+        }
+        .btn-primary:hover { box-shadow: 0 0 24px var(--paint-glow); }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.3rem; cursor: pointer; }
 
         /* ===== Hero ===== */
-        .hero {
-            max-width: 1100px; margin: 0 auto; padding: 50px 20px 40px; text-align: center;
+        .hero-section {
+            padding: 60px 32px 40px; text-align: center; position: relative;
         }
         .hero-badge {
-            display: inline-block; background: var(--surface2); border: 1px solid var(--border);
-            color: var(--text2); padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 18px;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 5px 16px; border-radius: 20px; font-size: 0.78rem;
+            color: var(--text-secondary); margin-bottom: 20px;
         }
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--paint), #69F0AE, var(--gold));
+        .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--paint); }
+        .hero-section h1 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; line-height: 1.15;
+            margin-bottom: 12px; letter-spacing: -0.02em;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--paint) 0%, #69F0AE 30%, var(--gold) 60%, var(--platinum) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .hero .subtitle { font-size: 1.1rem; color: var(--text2); max-width: 500px; margin: 0 auto 28px; }
-
-        /* Role Toggle */
-        .role-toggle {
-            display: inline-flex; background: var(--surface2); border-radius: 30px;
-            padding: 4px; gap: 4px; border: 1px solid var(--border);
+        .hero-subtitle {
+            font-size: 1.1rem; color: var(--text-secondary); max-width: 520px;
+            margin: 0 auto 32px; line-height: 1.5;
         }
-        .role-btn {
-            padding: 10px 22px; border-radius: 26px; border: none; cursor: pointer;
-            font-size: 0.9rem; font-weight: 600; transition: var(--transition);
-            background: transparent; color: var(--text2);
-            display: flex; align-items: center; gap: 6px;
+        .hero-stats-row {
+            display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 32px;
         }
-        .role-btn.active-painter {
-            background: rgba(0,230,118,0.15); color: var(--paint);
-            box-shadow: 0 0 20px var(--paint-glow);
-        }
-        .role-btn.active-hunter {
-            background: rgba(255,82,82,0.15); color: var(--hunter);
-            box-shadow: 0 0 20px var(--hunter-glow);
-        }
-
-        /* Stats */
-        .hero-stats { display: flex; justify-content: center; gap: 36px; margin-top: 28px; flex-wrap: wrap; }
-        .hero-stat { text-align: center; }
-        .hero-stat .n { font-size: 1.6rem; font-weight: 700; color: var(--gold); }
-        .hero-stat .l { font-size: 0.78rem; color: var(--text3); }
+        .hero-stat-item { text-align: center; }
+        .hero-stat-item .stat-num { font-size: 2rem; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+        .hero-stat-item .stat-label { font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* ===== Section ===== */
-        section { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
-        .sec-head { margin-bottom: 28px; }
-        .sec-head .icon { font-size: 1.8rem; margin-bottom: 4px; }
-        .sec-head h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
-        .sec-head p { font-size: 0.88rem; color: var(--text2); }
+        .section-block { padding: 48px 32px; }
+        .section-block-alt { background: var(--bg-alt); }
+        .section-header { margin-bottom: 32px; }
+        .section-label {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--text-tertiary); margin-bottom: 6px;
+        }
+        .section-header h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+        .section-header p { font-size: 0.9rem; color: var(--text-secondary); max-width: 560px; }
 
-        /* ===== Quick Cards ===== */
-        .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 14px; }
-        .quick-card {
+        .divider { border: none; border-top: 1px solid var(--border); margin: 0 32px; }
+
+        /* ===== Tier List ===== */
+        .tier-grid { display: flex; flex-direction: column; gap: 4px; }
+        .tier-row {
+            display: flex; align-items: stretch; gap: 0; border-radius: var(--radius);
+            overflow: hidden; border: 1px solid var(--border);
+        }
+        .tier-label {
+            width: 52px; min-width: 52px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.1rem; color: #000;
+        }
+        .tier-s-label { background: var(--tier-s); }
+        .tier-a-label { background: var(--tier-a); }
+        .tier-b-label { background: var(--tier-b); }
+        .tier-c-label { background: var(--tier-c); }
+        .tier-content {
+            flex: 1; background: var(--surface); padding: 14px 18px;
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+        }
+        .tier-entry {
+            display: flex; align-items: center; gap: 6px; background: var(--bg);
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 8px 14px; font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: var(--transition-fast); white-space: nowrap;
+        }
+        .tier-entry:hover { border-color: var(--border-light); transform: translateY(-1px); }
+        .tier-entry .pose-emoji { font-size: 1.2rem; }
+        .tier-entry .pose-maps { font-size: 0.7rem; color: var(--text-tertiary); font-weight: 400; }
+
+        /* ===== Map Explorer ===== */
+        .map-explorer {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 16px;
+        }
+        .map-card-pro {
+            position: relative; background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; transition: var(--transition);
+        }
+        .map-card-pro:hover { border-color: var(--border-light); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .map-card-pro.selected { border-color: var(--paint); box-shadow: 0 0 24px var(--paint-glow); }
+        .map-card-body { padding: 24px; }
+        .map-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .map-card-icon { font-size: 2.4rem; }
+        .map-card-header h3 { font-size: 1.1rem; font-weight: 700; }
+        .map-difficulty {
+            font-size: 0.72rem; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .map-stats-row { display: flex; gap: 14px; margin-bottom: 16px; font-size: 0.78rem; color: var(--text-secondary); }
+        .map-stats-row span { display: flex; align-items: center; gap: 4px; }
+        .map-zones { display: flex; flex-wrap: wrap; gap: 6px; }
+        .zone-tag {
+            font-size: 0.73rem; padding: 4px 12px; border-radius: 12px; font-weight: 500;
+            background: var(--bg); border: 1px solid var(--border); color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+        .zone-tag:hover { border-color: var(--border-light); }
+        .zone-tag.safe { border-color: rgba(0,230,118,0.3); color: var(--paint); background: rgba(0,230,118,0.06); }
+        .zone-tag.risk { border-color: rgba(255,82,82,0.3); color: var(--hunter); background: rgba(255,82,82,0.06); }
+        .map-pose-rec {
+            margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+            font-size: 0.78rem; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .map-pose-rec strong { color: var(--gold); font-size: 0.73rem; }
+
+        /* ===== Keybinds Pro ===== */
+        .keybinds-layout {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px;
+        }
+        .keybind-group {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 22px 20px; cursor: pointer; transition: var(--transition); text-decoration: none; color: inherit;
+            padding: 20px;
         }
-        .quick-card:hover { border-color: var(--paint); transform: translateY(-2px); }
-        .quick-card .qc-icon { font-size: 2rem; margin-bottom: 10px; }
-        .quick-card h3 { font-size: 1rem; margin-bottom: 4px; }
-        .quick-card p { font-size: 0.8rem; color: var(--text2); }
+        .keybind-group h4 {
+            font-size: 0.73rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-tertiary); margin-bottom: 14px;
+        }
+        .keybind-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .keybind-row:last-child { border-bottom: none; }
+        .key-capsule {
+            display: inline-flex; gap: 4px; align-items: center;
+        }
+        .key-cap {
+            background: var(--bg); border: 1px solid var(--border); border-radius: 5px;
+            padding: 3px 9px; font-size: 0.73rem; font-weight: 700;
+            font-family: var(--font-mono); color: var(--text);
+            box-shadow: 0 2px 0 rgba(255,255,255,0.05);
+        }
+        .keybind-desc { font-size: 0.82rem; color: var(--text-secondary); }
+        .keybind-tip { font-size: 0.68rem; color: var(--text-tertiary); font-style: italic; margin-left: 6px; }
 
-        /* ===== Pose Cards ===== */
-        .pose-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; }
-        .pose-card {
+        /* ===== Modes Table ===== */
+        .modes-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+        .modes-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .modes-table th {
+            background: var(--surface); padding: 14px 18px; text-align: left;
+            font-weight: 600; font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--text-tertiary); border-bottom: 1px solid var(--border);
+        }
+        .modes-table td { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+        .modes-table tr:last-child td { border-bottom: none; }
+        .modes-table tr:hover td { background: rgba(255,255,255,0.015); }
+        .mode-name { font-weight: 700; color: var(--text); }
+        .mode-icon { font-size: 1.2rem; margin-right: 6px; }
+
+        /* ===== Tips Pro ===== */
+        .tips-pro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 14px; }
+        .tip-card-pro {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 20px 16px; text-align: center; transition: var(--transition);
+            padding: 22px 24px; transition: var(--transition); position: relative; overflow: hidden;
         }
-        .pose-card:hover { border-color: var(--purple); }
-        .pose-visual {
-            width: 72px; height: 72px; margin: 0 auto 12px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
-            border: 2px dashed var(--border);
+        .tip-card-pro::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+            background: var(--paint); transition: var(--transition);
         }
-        .pose-card h4 { font-size: 0.95rem; margin-bottom: 2px; }
-        .pose-card .map-tag { font-size: 0.72rem; color: var(--text3); }
-        .pose-card .best { display: inline-block; background: rgba(255,215,64,0.1); color: var(--gold); padding: 2px 8px; border-radius: 8px; font-size: 0.7rem; margin-top: 6px; }
+        .tip-card-pro.hunter-card::before { background: var(--hunter); }
+        .tip-card-pro:hover { border-color: var(--border-light); }
+        .tip-card-pro .tip-number {
+            font-size: 0.68rem; font-weight: 700; color: var(--text-tertiary);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+        }
+        .tip-card-pro h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .tip-card-pro p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55; }
+        .tip-card-pro .tip-related {
+            margin-top: 10px; font-size: 0.72rem; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .tip-card-pro .tip-related a { color: var(--paint); text-decoration: none; }
+        .tip-card-pro.hunter-card .tip-related a { color: var(--hunter); }
 
-        /* ===== Map Cards ===== */
-        .map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 14px; }
-        .map-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 20px; transition: var(--transition);
+        /* ===== Cheat Sheet ===== */
+        .cheat-sheet {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 28px 32px;
         }
-        .map-card:hover { border-color: var(--blue); }
-        .map-card .map-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .map-card .map-icon { font-size: 2rem; }
-        .map-card h4 { font-size: 0.95rem; }
-        .map-card .diff { font-size: 0.72rem; color: var(--text3); }
-        .map-spots { display: flex; flex-wrap: wrap; gap: 6px; }
-        .spot-tag {
-            font-size: 0.72rem; padding: 3px 10px; border-radius: 10px;
-            background: var(--surface2); color: var(--text2); border: 1px solid var(--border);
+        .cheat-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 20px;
         }
-        .spot-tag.hot { border-color: var(--hunter); color: var(--hunter); }
-        .spot-tag.safe { border-color: var(--paint); color: var(--paint); }
-
-        /* ===== Keybind Table ===== */
-        .keys-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 8px; }
-        .key-item {
-            display: flex; align-items: center; gap: 10px; background: var(--surface);
-            border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px;
+        .cheat-col h4 {
+            font-size: 0.73rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-tertiary); margin-bottom: 10px;
         }
-        .key-badge {
-            display: inline-block; background: var(--surface2); border: 1px solid var(--border);
-            padding: 3px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 700;
-            font-family: "SF Mono", "Consolas", monospace; white-space: nowrap;
+        .cheat-col ul { list-style: none; }
+        .cheat-col li {
+            font-size: 0.82rem; color: var(--text-secondary); padding: 4px 0;
+            display: flex; align-items: center; gap: 6px;
         }
-        .key-desc { font-size: 0.82rem; color: var(--text2); }
-
-        /* ===== Tip Cards ===== */
-        .tip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 12px; }
-        .tip-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-            padding: 18px 20px; border-left: 3px solid var(--paint); transition: var(--transition);
-        }
-        .tip-card.hunter-tip { border-left-color: var(--hunter); }
-        .tip-card .tip-num {
-            font-size: 0.7rem; font-weight: 700; color: var(--text3); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .tip-card h4 { font-size: 0.95rem; margin-bottom: 4px; }
-        .tip-card p { font-size: 0.82rem; color: var(--text2); }
-
-        /* ===== Mode Compare ===== */
-        .mode-table {
-            width: 100%; border-collapse: collapse; font-size: 0.85rem;
-            border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
-        }
-        .mode-table th {
-            background: var(--surface2); padding: 12px 16px; text-align: left;
-            font-weight: 600; color: var(--text2); border-bottom: 1px solid var(--border);
-        }
-        .mode-table td {
-            padding: 12px 16px; border-bottom: 1px solid var(--border);
-        }
-        .mode-table tr:last-child td { border-bottom: none; }
-        .mode-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .cheat-col li::before { content: '•'; color: var(--paint); font-weight: 700; }
+        .cheat-col.hunter-col li::before { color: var(--hunter); }
 
         /* ===== Footer ===== */
-        .footer {
-            text-align: center; padding: 36px 20px; font-size: 0.78rem;
-            color: var(--text3); border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto;
+        .site-footer {
+            text-align: center; padding: 40px 32px; border-top: 1px solid var(--border);
+            font-size: 0.78rem; color: var(--text-tertiary);
         }
-        .footer a { color: var(--text2); }
+        .site-footer a { color: var(--text-secondary); text-decoration: none; }
+        .site-footer a:hover { color: var(--text); }
 
         /* ===== Toast ===== */
-        .toast {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-            background: var(--surface2); color: var(--text); border: 1px solid var(--border);
-            padding: 10px 24px; border-radius: 24px; font-size: 0.85rem; z-index: 200;
-            opacity: 0; transition: all 0.35s ease; pointer-events: none; white-space: nowrap;
+        .toast-container { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 200; pointer-events: none; }
+        .toast-msg {
+            background: var(--surface); border: 1px solid var(--border-light); color: var(--text);
+            padding: 10px 22px; border-radius: 22px; font-size: 0.84rem; opacity: 0;
+            transform: translateY(20px); transition: all 0.35s ease; white-space: nowrap;
+            box-shadow: var(--shadow);
         }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast-msg.show { opacity: 1; transform: translateY(0); }
 
-        /* ===== Hide/Show by Role ===== */
-        .painter-only, .hunter-only { display: none; }
-        body.role-painter .painter-only { display: inherit; }
-        body.role-hunter .hunter-only { display: inherit; }
-        body.role-painter .painter-only[style], body.role-hunter .hunter-only[style] { display: block; }
-        body.role-painter .pose-grid .painter-only { display: block; }
-        body.role-hunter .tip-grid .hunter-only { display: grid; }
+        /* ===== Mobile Sidebar Overlay ===== */
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 60; backdrop-filter: blur(4px);
+        }
+        .sidebar-overlay.open { display: block; }
+        .sidebar.mobile-open { transform: translateX(0); }
 
         /* ===== Responsive ===== */
-        @media (max-width: 768px) {
-            .nav-links { display: none;
-                position: absolute; top: 60px; left: 0; right: 0;
-                background: rgba(15,15,20,0.95); backdrop-filter: blur(20px);
-                flex-direction: column; padding: 12px 20px; gap: 2px;
-                border-bottom: 1px solid var(--border);
+        @media (max-width: 1024px) {
+            .sidebar { display: none;
+                position: fixed; left: 0; top: 0; z-index: 70;
+                transform: translateX(-100%); transition: transform 0.3s ease;
+                width: 260px; height: 100vh;
             }
-            .nav-links.open { display: flex; }
-            .menu-btn { display: block; }
-            .hero { padding: 36px 16px 28px; }
-            section { padding: 36px 16px; }
-            .hero-stats { gap: 20px; }
-            .mode-table { font-size: 0.75rem; }
-            .mode-table th, .mode-table td { padding: 8px 10px; }
+            .sidebar.mobile-open { display: flex; transform: translateX(0); }
+            .sidebar-overlay { display: none; }
+            .sidebar-overlay.open { display: block; }
+            .mobile-menu-btn { display: block; }
+            .topbar { padding: 0 20px; }
+            .hero-section, .section-block { padding-left: 20px; padding-right: 20px; }
+            .search-wrap input { width: 120px; }
+            .search-wrap input:focus { width: 160px; }
         }
-        @media (max-width: 480px) {
-            .quick-grid, .pose-grid { grid-template-columns: 1fr 1fr; }
-            .map-grid, .tip-grid { grid-template-columns: 1fr; }
-            .role-btn { padding: 8px 14px; font-size: 0.8rem; }
+        @media (max-width: 640px) {
+            .topbar-actions { gap: 4px; }
+            .role-pill button { padding: 6px 12px; font-size: 0.76rem; }
+            .search-wrap input { width: 100px; }
+            .search-wrap input:focus { width: 130px; }
+            .hero-section h1 { font-size: 1.8rem; }
+            .hero-stats-row { gap: 20px; }
+            .hero-stat-item .stat-num { font-size: 1.5rem; }
+            .tier-label { width: 40px; min-width: 40px; font-size: 0.9rem; }
+            .tier-content { padding: 10px 12px; gap: 6px; }
+            .tier-entry { padding: 6px 10px; font-size: 0.76rem; }
+            .map-explorer { grid-template-columns: 1fr; }
+            .tips-pro-grid { grid-template-columns: 1fr; }
+            .keybinds-layout { grid-template-columns: 1fr; }
+            .hide-mobile { display: none; }
         }
     </style>
 </head>
-<body class="role-painter">
+<body>
 
-    <!-- Nav -->
-    <nav class="nav" id="nav">
-        <div class="nav-inner">
-            <a href="#" class="nav-logo"><span>🦎</span>MECCA CHAMELEON</a>
-            <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#quick">Quick Start</a></li>
-                <li><a href="#poses">Poses</a></li>
-                <li><a href="#maps">Maps</a></li>
-                <li><a href="#keys">Keybinds</a></li>
-                <li><a href="#modes">Modes</a></li>
-                <li><a href="#tips">Tips</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-badge">🦎 STEAM HIT · 24-Player Hide & Seek · Released Jun 10, 2026</div>
-        <h1>MECCA CHAMELEON · Strategy Guide</h1>
-        <p class="subtitle">Pick your role. Learn the meta. Win.</p>
-        <div class="role-toggle" id="roleToggle">
-            <button class="role-btn active-painter" data-role="painter">🎨 Painter</button>
-            <button class="role-btn" data-role="hunter">🔫 Hunter</button>
-        </div>
-        <div class="hero-stats">
-            <div class="hero-stat"><div class="n">4</div><div class="l">Game Modes</div></div>
-            <div class="hero-stat"><div class="n">8</div><div class="l">Core Maps</div></div>
-            <div class="hero-stat"><div class="n">7</div><div class="l">Poses</div></div>
-            <div class="hero-stat"><div class="n">24</div><div class="l">Max Players</div></div>
-        </div>
-    </section>
+    <!-- Layout -->
+    <div class="app-layout">
 
-    <!-- Quick Start -->
-    <section id="quick">
-        <div class="sec-head"><h2>📍 Quick Start</h2><p>New or experienced — jump straight to what you need</p></div>
-        <div class="quick-grid">
-            <a href="#poses" class="quick-card"><div class="qc-icon">🧘</div><h3>Pose Guide</h3><p>7 poses × best map for each</p></a>
-            <a href="#maps" class="quick-card"><div class="qc-icon">🗺️</div><h3>Map Hotspots</h3><p>Best hiding spots per map</p></a>
-            <a href="#keys" class="quick-card"><div class="qc-icon">⌨️</div><h3>Keybinds</h3><p>Every essential hotkey</p></a>
-            <a href="#modes" class="quick-card"><div class="qc-icon">🎯</div><h3>4 Modes Compared</h3><p>Rules + strategy per mode</p></a>
-            <a href="#tips" class="quick-card"><div class="qc-icon">💡</div><h3>Advanced Tips</h3><p>Toggle role above to filter</p></a>
-            <a href="#" class="quick-card" onclick="showToast('🏗️ Video guides coming soon!');return false"><div class="qc-icon">🎬</div><h3>Video Guides</h3><p>Gameplay tutorials (soon)</p></a>
-        </div>
-    </section>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="#" class="sidebar-logo"><span>🦎</span>MECCA GUIDE</a>
+            <a href="#tierlist" class="sidebar-link active">🏆 Pose Tier List <span class="badge badge-hot">META</span></a>
+            <a href="#maps" class="sidebar-link">🗺️ Map Explorer</a>
+            <a href="#keybinds" class="sidebar-link">⌨️ Keybinds</a>
+            <a href="#modes" class="sidebar-link">🎯 Game Modes</a>
+            <a href="#tips" class="sidebar-link">💡 Advanced Tips</a>
+            <a href="#cheatsheet" class="sidebar-link">📋 Cheat Sheet</a>
+            <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--border);">
+                <a href="#" class="sidebar-link" onclick="window.print();return false;">🖨️ Print Guide</a>
+                <a href="https://store.steampowered.com" target="_blank" rel="noopener" class="sidebar-link" style="font-size:0.78rem;color:var(--text-tertiary);">🎮 Steam Store ↗</a>
+            </div>
+        </aside>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Pose Guide -->
-    <section id="poses">
-        <div class="sec-head"><div class="icon">🧘</div><h2>Pose Guide</h2><p>The right pose for the right surface makes you invisible</p></div>
-        <div class="pose-grid">
-            <div class="pose-card"><div class="pose-visual">🟢</div><h4>Curl-Up</h4><p class="map-tag">Smooth surfaces</p><span class="best">Best: Indoor Country</span></div>
-            <div class="pose-card"><div class="pose-visual">🔵</div><h4>Backbend</h4><p class="map-tag">Over objects</p><span class="best">Best: Sugarland / Backrooms</span></div>
-            <div class="pose-card"><div class="pose-visual">🟡</div><h4>Slanted</h4><p class="map-tag">Stairs / roofs</p><span class="best">Best: Penguin Hotel</span></div>
-            <div class="pose-card"><div class="pose-visual">🟣</div><h4>Starfish</h4><p class="map-tag">Flat walls</p><span class="best">Best: All maps</span></div>
-            <div class="pose-card"><div class="pose-visual">🟠</div><h4>T-Pose</h4><p class="map-tag">Corners / doorframes</p><span class="best">Best: Tight spaces</span></div>
-            <div class="pose-card"><div class="pose-visual">🔴</div><h4>Fold</h4><p class="map-tag">Behind small objects</p><span class="best">Best: Cluttered areas</span></div>
-            <div class="pose-card"><div class="pose-visual">⚪</div><h4>Custom</h4><p class="map-tag">Press R to fine-tune</p><span class="best">Best: Niche spots</span></div>
-        </div>
-    </section>
+        <!-- Main -->
+        <main class="main-content">
 
-    <!-- Map Hotspots -->
-    <section id="maps">
-        <div class="sec-head"><div class="icon">🗺️</div><h2>Map Hotspots</h2><p>🔥 = Hunters check often &nbsp;|&nbsp; 🟢 = Painter-friendly</p></div>
-        <div class="map-grid">
-            <div class="map-card">
-                <div class="map-header"><div class="map-icon">🏘️</div><div><h4>Indoor Country</h4><div class="diff">Difficulty: Medium</div></div></div>
-                <div class="map-spots">
-                    <span class="spot-tag safe">🟢 Behind shelves</span><span class="spot-tag safe">🟢 Crate stacks</span>
-                    <span class="spot-tag safe">🟢 Checkered floor</span><span class="spot-tag hot">🔥 Ceiling corners</span>
-                    <span class="spot-tag">Doorframes</span><span class="spot-tag hot">🔥 Under stairs</span>
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="topbar-title">
+                    <button class="mobile-menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+                    <span class="hide-mobile">MECCA CHAMELEON</span>
+                </div>
+                <div class="topbar-actions">
+                    <div class="role-pill" id="rolePill">
+                        <button class="active-painter" data-role="painter">🎨 Painter</button>
+                        <button data-role="hunter">🔫 Hunter</button>
+                    </div>
+                    <div class="search-wrap">
+                        <span class="search-icon">⌘</span>
+                        <input type="text" id="searchInput" placeholder="Search poses, maps, tips…" autocomplete="off">
+                    </div>
+                    <button class="btn-primary hide-mobile" onclick="document.querySelector('#cheatsheet').scrollIntoView({behavior:'smooth'})">⚡ Cheat Sheet</button>
                 </div>
             </div>
-            <div class="map-card">
-                <div class="map-header"><div class="map-icon">🍬</div><div><h4>Sugarland</h4><div class="diff">Difficulty: Easy</div></div></div>
-                <div class="map-spots">
-                    <span class="spot-tag safe">🟢 Colorful walls</span><span class="spot-tag safe">🟢 Cake decor</span>
-                    <span class="spot-tag safe">🟢 Candy piles</span><span class="spot-tag hot">🔥 Open ground</span>
-                    <span class="spot-tag">Ceilings</span><span class="spot-tag">Behind pipes</span>
+
+            <!-- Hero -->
+            <section class="hero-section">
+                <div class="hero-badge"><span class="dot"></span> STEAM HIT · 24 Players · Hide & Seek · v1.0</div>
+                <h1><span class="hero-gradient">The Last MECCA CHAMELEON</span><br>Guide You'll Need.</h1>
+                <p class="hero-subtitle">Tier lists, interactive maps, pose meta, and role-specific tactics. No ads. No filler. Just wins.</p>
+                <div class="role-pill" id="rolePillHero">
+                    <button class="active-painter" data-role="painter">🎨 I'm a Painter</button>
+                    <button data-role="hunter">🔫 I'm a Hunter</button>
                 </div>
-            </div>
-            <div class="map-card">
-                <div class="map-header"><div class="map-icon">🐧</div><div><h4>Penguin Hotel</h4><div class="diff">Difficulty: Hard</div></div></div>
-                <div class="map-spots">
-                    <span class="spot-tag safe">🟢 Stairs / roofs</span><span class="spot-tag hot">🔥 Hallway corners</span>
-                    <span class="spot-tag safe">🟢 Mural walls</span><span class="spot-tag hot">🔥 Behind front desk</span>
-                    <span class="spot-tag">Balcony edges</span><span class="spot-tag">Elevator bay</span>
+                <div class="hero-stats-row">
+                    <div class="hero-stat-item"><div class="stat-num" data-count="7">7</div><div class="stat-label">Poses Ranked</div></div>
+                    <div class="hero-stat-item"><div class="stat-num" data-count="8">8</div><div class="stat-label">Maps Mapped</div></div>
+                    <div class="hero-stat-item"><div class="stat-num" data-count="24">24</div><div class="stat-label">Tips & Tactics</div></div>
+                    <div class="hero-stat-item"><div class="stat-num" data-count="0">0</div><div class="stat-label">Ads on Page</div></div>
                 </div>
-            </div>
-            <div class="map-card">
-                <div class="map-header"><div class="map-icon">🏫</div><div><h4>Backrooms</h4><div class="diff">Difficulty: Hard</div></div></div>
-                <div class="map-spots">
-                    <span class="spot-tag safe">🟢 Yellow walls</span><span class="spot-tag hot">🔥 Hallway ends</span>
-                    <span class="spot-tag safe">🟢 Near ceiling lights</span><span class="spot-tag hot">🔥 Texture breaks</span>
-                    <span class="spot-tag">Behind pillars</span><span class="spot-tag">Wall indents</span>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Tier List -->
+            <section class="section-block" id="tierlist">
+                <div class="section-header">
+                    <div class="section-label">Meta Analysis</div>
+                    <h2>🏆 Pose Tier List</h2>
+                    <p>S = must-pick for ranked. C = niche. Rankings based on win rate across all maps.</p>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="tier-grid">
+                    <div class="tier-row">
+                        <div class="tier-label tier-s-label">S</div>
+                        <div class="tier-content">
+                            <div class="tier-entry"><span class="pose-emoji">🟢</span> Curl-Up <span class="pose-maps">Indoor Country</span></div>
+                        </div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-label tier-a-label">A</div>
+                        <div class="tier-content">
+                            <div class="tier-entry"><span class="pose-emoji">🔵</span> Backbend <span class="pose-maps">Sugarland, Backrooms</span></div>
+                            <div class="tier-entry"><span class="pose-emoji">🟡</span> Slanted <span class="pose-maps">Penguin Hotel</span></div>
+                            <div class="tier-entry"><span class="pose-emoji">🟣</span> Starfish <span class="pose-maps">All-rounder</span></div>
+                        </div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-label tier-b-label">B</div>
+                        <div class="tier-content">
+                            <div class="tier-entry"><span class="pose-emoji">🟠</span> T-Pose <span class="pose-maps">Corners, frames</span></div>
+                            <div class="tier-entry"><span class="pose-emoji">🔴</span> Fold <span class="pose-maps">Clutter zones</span></div>
+                        </div>
+                    </div>
+                    <div class="tier-row">
+                        <div class="tier-label tier-c-label">C</div>
+                        <div class="tier-content">
+                            <div class="tier-entry"><span class="pose-emoji">⚪</span> Custom <span class="pose-maps">Niche only — use R to tweak</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <!-- Keybinds -->
-    <section id="keys">
-        <div class="sec-head"><div class="icon">⌨️</div><h2>Keybinds</h2><p>Muscle memory wins games</p></div>
-        <div class="keys-grid">
-            <div class="key-item"><span class="key-badge">F</span><span class="key-desc">Paint menu</span></div>
-            <div class="key-item"><span class="key-badge">R</span><span class="key-desc">Pose wheel</span></div>
-            <div class="key-item"><span class="key-badge">Space</span><span class="key-desc">Eyedropper / Climb walls</span></div>
-            <div class="key-item"><span class="key-badge">V</span><span class="key-desc">Toggle shadows ⚡CRITICAL</span></div>
-            <div class="key-item"><span class="key-badge">3</span><span class="key-desc">X-ray mode (check misses)</span></div>
-            <div class="key-item"><span class="key-badge">5</span><span class="key-desc">Free cam (Painter)</span></div>
-            <div class="key-item"><span class="key-badge">Ctrl</span><span class="key-desc">Crouch / Climb down</span></div>
-            <div class="key-item"><span class="key-badge">RMB + drag</span><span class="key-desc">Brush size</span></div>
-            <div class="key-item"><span class="key-badge">LMB</span><span class="key-desc">Paint / Shoot</span></div>
-            <div class="key-item"><span class="key-badge">WASD</span><span class="key-desc">Move</span></div>
-        </div>
-    </section>
+            <hr class="divider">
 
-    <!-- Modes -->
-    <section id="modes">
-        <div class="sec-head"><div class="icon">🎯</div><h2>4 Game Modes</h2><p>Different rules, different meta</p></div>
-        <div style="overflow-x:auto;">
-            <table class="mode-table">
-                <thead>
-                    <tr><th>Mode</th><th>Rules</th><th>Painter Strat</th><th>Hunter Strat</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Normal</strong></td>
-                        <td>Survive until timer ends</td>
-                        <td>Relocate after whistle — high risk, high reward</td>
-                        <td>Room-clear method: outside → in</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Infection</strong></td>
-                        <td>Caught = join hunter team</td>
-                        <td>Play safe early; fewer teammates later</td>
-                        <td>Rush first capture to snowball</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Double</strong></td>
-                        <td>Teams swap hide/seek</td>
-                        <td>Remember enemy spots for counter-play</td>
-                        <td>Use previous-round memory</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Reverse Chicken</strong></td>
-                        <td>All hide → all seek, scored</td>
-                        <td>Keep final paint job small</td>
-                        <td>Don't fixate on paint — look for clones</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+            <!-- Map Explorer -->
+            <section class="section-block section-block-alt" id="maps">
+                <div class="section-header">
+                    <div class="section-label">Map Knowledge</div>
+                    <h2>🗺️ Interactive Map Explorer</h2>
+                    <p>Click a map to reveal hotspots. 🟢 safe zones · 🔴 hunter scan zones</p>
+                </div>
+                <div class="map-explorer">
+                    <div class="map-card-pro" onclick="toggleMapCard(this)">
+                        <div class="map-card-body">
+                            <div class="map-card-header">
+                                <div class="map-card-icon">🏘️</div>
+                                <div>
+                                    <h3>Indoor Country</h3>
+                                    <div class="map-difficulty">🟡 Medium</div>
+                                </div>
+                            </div>
+                            <div class="map-stats-row"><span>📐 Medium map</span><span>👥 8–16 players</span></div>
+                            <div class="map-zones">
+                                <span class="zone-tag safe">🟢 Behind shelves</span>
+                                <span class="zone-tag safe">🟢 Crate stacks</span>
+                                <span class="zone-tag safe">🟢 Checkered floor</span>
+                                <span class="zone-tag risk">🔴 Ceiling corners</span>
+                                <span class="zone-tag">Doorframes</span>
+                                <span class="zone-tag risk">🔴 Under stairs</span>
+                            </div>
+                            <div class="map-pose-rec">🎯 <strong>Best pose:</strong> Curl-Up — blends with flat furniture surfaces</div>
+                        </div>
+                    </div>
+                    <div class="map-card-pro" onclick="toggleMapCard(this)">
+                        <div class="map-card-body">
+                            <div class="map-card-header">
+                                <div class="map-card-icon">🍬</div>
+                                <div>
+                                    <h3>Sugarland</h3>
+                                    <div class="map-difficulty">🟢 Easy</div>
+                                </div>
+                            </div>
+                            <div class="map-stats-row"><span>📐 Large map</span><span>👥 12–24 players</span></div>
+                            <div class="map-zones">
+                                <span class="zone-tag safe">🟢 Colorful walls</span>
+                                <span class="zone-tag safe">🟢 Cake decorations</span>
+                                <span class="zone-tag safe">🟢 Candy piles</span>
+                                <span class="zone-tag risk">🔴 Open ground</span>
+                                <span class="zone-tag">Ceilings</span>
+                                <span class="zone-tag">Behind pipes</span>
+                            </div>
+                            <div class="map-pose-rec">🎯 <strong>Best pose:</strong> Backbend — over dessert displays</div>
+                        </div>
+                    </div>
+                    <div class="map-card-pro" onclick="toggleMapCard(this)">
+                        <div class="map-card-body">
+                            <div class="map-card-header">
+                                <div class="map-card-icon">🐧</div>
+                                <div>
+                                    <h3>Penguin Hotel</h3>
+                                    <div class="map-difficulty">🔴 Hard</div>
+                                </div>
+                            </div>
+                            <div class="map-stats-row"><span>📐 Vertical map</span><span>👥 8–16 players</span></div>
+                            <div class="map-zones">
+                                <span class="zone-tag safe">🟢 Stairs / roofs</span>
+                                <span class="zone-tag risk">🔴 Hallway corners</span>
+                                <span class="zone-tag safe">🟢 Mural walls</span>
+                                <span class="zone-tag risk">🔴 Behind front desk</span>
+                                <span class="zone-tag">Balcony edges</span>
+                                <span class="zone-tag">Elevator bay</span>
+                            </div>
+                            <div class="map-pose-rec">🎯 <strong>Best pose:</strong> Slanted — matches diagonal architecture</div>
+                        </div>
+                    </div>
+                    <div class="map-card-pro" onclick="toggleMapCard(this)">
+                        <div class="map-card-body">
+                            <div class="map-card-header">
+                                <div class="map-card-icon">🏫</div>
+                                <div>
+                                    <h3>Backrooms</h3>
+                                    <div class="map-difficulty">🔴 Hard</div>
+                                </div>
+                            </div>
+                            <div class="map-stats-row"><span>📐 Labyrinth</span><span>👥 4–12 players</span></div>
+                            <div class="map-zones">
+                                <span class="zone-tag safe">🟢 Yellow walls</span>
+                                <span class="zone-tag risk">🔴 Hallway ends</span>
+                                <span class="zone-tag safe">🟢 Near ceiling lights</span>
+                                <span class="zone-tag risk">🔴 Texture breaks</span>
+                                <span class="zone-tag">Behind pillars</span>
+                                <span class="zone-tag">Wall indents</span>
+                            </div>
+                            <div class="map-pose-rec">🎯 <strong>Best pose:</strong> Starfish — flat against endless walls</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <!-- Advanced Tips -->
-    <section id="tips">
-        <div class="sec-head"><div class="icon">💡</div><h2>Advanced Tips</h2><p>Toggle role above to see role-specific tips</p></div>
+            <hr class="divider">
 
-        <!-- Painter Tips -->
-        <div class="tip-grid painter-only" style="display:grid;">
-            <div class="tip-card"><div class="tip-num">Tip 01 · Golden Rule</div><h4>Shape beats color</h4><p>Noobs obsess over color. Pros fix the silhouette. Use non-humanoid poses to break your outline.</p></div>
-            <div class="tip-card"><div class="tip-num">Tip 02</div><h4>Hide in plain sight</h4><p>Dark corners are hunter instinct #1. Pick busy, well-lit backgrounds — visual fatigue is your best camouflage.</p></div>
-            <div class="tip-card"><div class="tip-num">Tip 03</div><h4>Sample 3 colors minimum</h4><p>Mid-tone + shadow + highlight. Toggle shadows OFF (V) before checking. One flat color = instant giveaway.</p></div>
-            <div class="tip-card"><div class="tip-num">Tip 04</div><h4>Mind the roughness</h4><p>Roughness & metallic sliders are the #1 forgotten setting. A glossy player on a matte wall screams "shoot me."</p></div>
-            <div class="tip-card"><div class="tip-num">Tip 05</div><h4>Clone tactics</h4><p>Use clones to create geometric illusions. In Reverse Chicken Race, keep your final paint job as small as possible.</p></div>
-            <div class="tip-card"><div class="tip-num">Tip 06</div><h4>Never reuse a spot</h4><p>Same spot twice = dead. Good hunters remember. Rotate maps, rotate hiding spots, keep them guessing.</p></div>
-        </div>
+            <!-- Keybinds -->
+            <section class="section-block" id="keybinds">
+                <div class="section-header">
+                    <div class="section-label">Controls</div>
+                    <h2>⌨️ Keybinds</h2>
+                    <p>Muscle memory wins fights. Master these.</p>
+                </div>
+                <div class="keybinds-layout">
+                    <div class="keybind-group">
+                        <h4>🎨 Painting</h4>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">F</span></span><span class="keybind-desc">Paint menu</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">Space</span></span><span class="keybind-desc">Eyedropper</span><span class="keybind-tip">sample wall color</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">RMB</span> + drag</span><span class="keybind-desc">Brush size</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">V</span></span><span class="keybind-desc">Toggle shadows</span><span class="keybind-tip">⚡ critical check</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">3</span></span><span class="keybind-desc">X-ray mode</span><span class="keybind-tip">spot unpainted areas</span></div>
+                    </div>
+                    <div class="keybind-group">
+                        <h4>🧘 Movement & Camera</h4>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">W</span><span class="key-cap">A</span><span class="key-cap">S</span><span class="key-cap">D</span></span><span class="keybind-desc">Move</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">R</span></span><span class="keybind-desc">Pose wheel</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">Space</span></span><span class="keybind-desc">Climb walls</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">Ctrl</span></span><span class="keybind-desc">Crouch / Descend</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">5</span></span><span class="keybind-desc">Free cam</span><span class="keybind-tip">Painter only</span></div>
+                    </div>
+                    <div class="keybind-group">
+                        <h4>🔫 Combat</h4>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">LMB</span></span><span class="keybind-desc">Shoot / Paint</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">R</span></span><span class="keybind-desc">Reload (Hunter)</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">Shift</span></span><span class="keybind-desc">Sprint</span></div>
+                        <div class="keybind-row"><span class="key-capsule"><span class="key-cap">Tab</span></span><span class="keybind-desc">Scoreboard</span></div>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Hunter Tips -->
-        <div class="tip-grid hunter-only">
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 01 · Core Mindset</div><h4>Forget color. Hunt shapes.</h4><p>Elite painters match color perfectly. Look for: broken symmetry, odd bumps, clipping bodies, texture seams.</p></div>
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 02</div><h4>Room-clear method</h4><p>Sweep clockwise or counter-clockwise. Start at the perimeter, push inward. Never sprint randomly — it blurs vision.</p></div>
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 03</div><h4>Change angles constantly</h4><p>One angle lies. Crouch, jump, strafe against walls. A hidden painter pops into view when your perspective shifts.</p></div>
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 04</div><h4>Shotgun = flashlight</h4><p>Muzzle flash lights up dark corners better than gamma tweaking. Make every shot count — each bullet gives intel.</p></div>
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 05</div><h4>Slow is fast</h4><p>Sprinting blurs everything. Walk. Stop. Let your eyes scan. Human vision detects detail best when stationary.</p></div>
-            <div class="tip-card hunter-tip"><div class="tip-num">Tip 06</div><h4>Look up. Look down.</h4><p>Rookie hunters never check ceilings or floor edges. Elite painters love high ledges and floor recesses — that's your kill zone.</p></div>
-        </div>
-    </section>
+            <hr class="divider">
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>🦎 MECCA CHAMELEON Player Guide · MVP</p>
-        <p style="margin-top:4px;">Sources: <a href="https://www.destructoid.com/meccha-chameleon-beginners-tips-and-tricks-for-painters-and-hunters/" target="_blank" rel="noopener">Destructoid</a> · <a href="https://gamerant.com/meccha-chameleon-hunter-tips/" target="_blank" rel="noopener">GameRant</a> · <a href="https://mecchachameleon.art" target="_blank" rel="noopener">Community Wiki</a></p>
-    </footer>
+            <!-- Modes -->
+            <section class="section-block section-block-alt" id="modes">
+                <div class="section-header">
+                    <div class="section-label">Game Knowledge</div>
+                    <h2>🎯 Game Modes Compared</h2>
+                    <p>Each mode demands a different playstyle. Know the win condition.</p>
+                </div>
+                <div class="modes-table-wrap">
+                    <table class="modes-table">
+                        <thead>
+                            <tr><th>Mode</th><th>Win Condition</th><th>Painter Meta</th><th>Hunter Meta</th><th>Pacing</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="mode-name"><span class="mode-icon">🎯</span>Normal</span></td>
+                                <td>Survive timer</td>
+                                <td>Relocate after whistle — high risk, high reward</td>
+                                <td>Room-clear: perimeter → center</td>
+                                <td>⚡⚡ Medium</td>
+                            </tr>
+                            <tr>
+                                <td><span class="mode-name"><span class="mode-icon">🧟</span>Infection</span></td>
+                                <td>Last painter standing</td>
+                                <td>Play defensive early; rotate every 30s</td>
+                                <td>Rush first capture, snowball from there</td>
+                                <td>⚡⚡⚡ Fast</td>
+                            </tr>
+                            <tr>
+                                <td><span class="mode-name"><span class="mode-icon">🔄</span>Double</span></td>
+                                <td>Most survived rounds</td>
+                                <td>Remember enemy hide spots for your turn</td>
+                                <td>Replay mental tape from your hiding round</td>
+                                <td>⚡ Slow tactical</td>
+                            </tr>
+                            <tr>
+                                <td><span class="mode-name"><span class="mode-icon">🐔</span>Reverse Chicken</span></td>
+                                <td>Highest score</td>
+                                <td>Final paint = smallest possible. Use clones.</td>
+                                <td>Don't tunnel on paint — hunt clones too</td>
+                                <td>⚡⚡ Medium</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Tips -->
+            <section class="section-block" id="tips">
+                <div class="section-header">
+                    <div class="section-label">Advanced Tactics</div>
+                    <h2>💡 Role-Specific Tips</h2>
+                    <p>Toggle your role above or use the pill below. Each tip cross-references map and pose strategy.</p>
+                </div>
+
+                <!-- Painter Tips (default visible) -->
+                <div class="tips-pro-grid" id="painterTips">
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #1</div>
+                        <h4>Silhouette > Color</h4>
+                        <p>Rookies match colors. Veterans break outlines. Choose a non-humanoid pose so your shape reads as "object," not "body."</p>
+                        <div class="tip-related">🔗 See: <a href="#tierlist">Pose Tier List</a></div>
+                    </div>
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #2</div>
+                        <h4>Hide in the Busy</h4>
+                        <p>Hunter instinct #1: check dark corners. Go where they won't look — well-lit, visually noisy backgrounds. Clutter creates camouflage.</p>
+                        <div class="tip-related">🔗 See: <a href="#maps">Map Explorer</a> for dense zones</div>
+                    </div>
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #3</div>
+                        <h4>The 3-Color Rule</h4>
+                        <p>Every spot needs 3 sampled colors: mid-tone + shadow + highlight. Press V to kill shadows and verify. Single flat color = instant death.</p>
+                        <div class="tip-related">🔗 See: <a href="#keybinds">Keybinds</a> — V, Space, 3</div>
+                    </div>
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #4</div>
+                        <h4>Roughness Is the Silent Killer</h4>
+                        <p>#1 forgotten setting. Glossy player on matte wall = visible from across the map. Match roughness and metallic before matching color.</p>
+                    </div>
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #5</div>
+                        <h4>Clone Mind Games</h4>
+                        <p>Place clones to create false silhouettes. In Reverse Chicken Race: your final paint job should be tiny — it's the only one hunters see.</p>
+                        <div class="tip-related">🔗 See: <a href="#modes">Reverse Chicken Race</a></div>
+                    </div>
+                    <div class="tip-card-pro">
+                        <div class="tip-number">Painter · Rule #6</div>
+                        <h4>Never Repeat a Spot</h4>
+                        <p>Two consecutive rounds in the same spot = you're dead. Good hunters have photographic memory. Rotate maps, rotate angles, stay unpredictable.</p>
+                    </div>
+                </div>
+
+                <!-- Hunter Tips (hidden by default) -->
+                <div class="tips-pro-grid" id="hunterTips" style="display:none;">
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #1</div>
+                        <h4>Hunt Shapes, Not Colors</h4>
+                        <p>Elite painters nail colors. You hunt geometry: broken symmetry, odd protrusions, clipping bodies, texture seam mismatches. Color lies — shape doesn't.</p>
+                    </div>
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #2</div>
+                        <h4>The Room-Clear System</h4>
+                        <p>Sweep clockwise. Start at the perimeter, push inward. Never sprint — visual information blurs at speed. Methodical > fast.</p>
+                        <div class="tip-related">🔗 See: <a href="#maps">Map Explorer</a> — scan zones marked 🔴 first</div>
+                    </div>
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #3</div>
+                        <h4>One Angle Lies</h4>
+                        <p>A painter invisible from straight-on might pop out from the side. Crouch, jump, strafe against walls. Change perspective every time you enter a room.</p>
+                    </div>
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #4</div>
+                        <h4>Shotgun = Flashlight</h4>
+                        <p>The muzzle flash illuminates dark corners better than gamma settings. Every bullet is information — conserve ammo, maximize intel per shot.</p>
+                    </div>
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #5</div>
+                        <h4>Slow Down to Speed Up</h4>
+                        <p>Sprinting blurs everything. Walk. Stop. Let your eyes adjust. Human vision detects detail best when the observer is stationary. Stand still — let them panic.</p>
+                    </div>
+                    <div class="tip-card-pro hunter-card">
+                        <div class="tip-number">Hunter · Rule #6</div>
+                        <h4>Ceilings & Floor Edges</h4>
+                        <p>Rookie hunters scan eye-level. Pros check ceilings first, floor recesses second. That's where the best painters hide. Look where others don't.</p>
+                        <div class="tip-related">🔗 See: <a href="#maps">Map Explorer</a> — high & low zones</div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Cheat Sheet -->
+            <section class="section-block section-block-alt" id="cheatsheet">
+                <div class="section-header">
+                    <div class="section-label">Quick Reference</div>
+                    <h2>📋 One-Page Cheat Sheet</h2>
+                    <p>Everything you need, one glance. Bookmark this section. Print it. Share it.</p>
+                </div>
+                <div class="cheat-sheet">
+                    <div class="cheat-grid">
+                        <div class="cheat-col">
+                            <h4>🎨 Painter Checklist</h4>
+                            <ul>
+                                <li>Pick pose per map (see Tier List)</li>
+                                <li>Sample 3 colors minimum</li>
+                                <li>Toggle shadows OFF (V) to check</li>
+                                <li>Match roughness & metallic</li>
+                                <li>X-ray check before time runs out</li>
+                                <li>Relocate after whistle (Normal mode)</li>
+                                <li>Never same spot twice in a row</li>
+                            </ul>
+                        </div>
+                        <div class="cheat-col hunter-col">
+                            <h4>🔫 Hunter Checklist</h4>
+                            <ul>
+                                <li>Room-clear clockwise, perimeter → in</li>
+                                <li>Check ceilings AND floor edges first</li>
+                                <li>Change angle: crouch, jump, strafe</li>
+                                <li>Look for shape breaks, not colors</li>
+                                <li>Use muzzle flash on dark corners</li>
+                                <li>Walk — don't sprint while scanning</li>
+                                <li>Scan 🔴 zones on Map Explorer first</li>
+                            </ul>
+                        </div>
+                        <div class="cheat-col">
+                            <h4>⌨️ Must-Know Keys</h4>
+                            <ul>
+                                <li><kbd>F</kbd> Paint menu</li>
+                                <li><kbd>Space</kbd> Eyedropper / Climb</li>
+                                <li><kbd>V</kbd> Toggle shadows</li>
+                                <li><kbd>R</kbd> Pose wheel</li>
+                                <li><kbd>3</kbd> X-ray check</li>
+                                <li><kbd>5</kbd> Free cam</li>
+                                <li><kbd>Ctrl</kbd> Crouch / Descend</li>
+                            </ul>
+                        </div>
+                        <div class="cheat-col">
+                            <h4>🗺️ Best Pose × Map</h4>
+                            <ul>
+                                <li>🏘️ Indoor Country → Curl-Up</li>
+                                <li>🍬 Sugarland → Backbend</li>
+                                <li>🐧 Penguin Hotel → Slanted</li>
+                                <li>🏫 Backrooms → Starfish</li>
+                                <li>🟠 Tight spaces → T-Pose</li>
+                                <li>🔴 Clutter → Fold</li>
+                                <li>⚪ Niche spots → Custom</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="site-footer">
+                <p>🦎 MECCA CHAMELEON Pro Strategy Guide · No ads. No tracking. Just wins.</p>
+                <p style="margin-top:6px;">
+                    Built with data from <a href="https://www.destructoid.com/meccha-chameleon-beginners-tips-and-tricks-for-painters-and-hunters/" target="_blank" rel="noopener">Destructoid</a> ·
+                    <a href="https://gamerant.com/meccha-chameleon-hunter-tips/" target="_blank" rel="noopener">GameRant</a> ·
+                    <a href="https://mecchachameleon.art" target="_blank" rel="noopener">Community Wiki</a>
+                </p>
+            </footer>
+
+        </main>
+    </div>
 
     <!-- Toast -->
-    <div class="toast" id="toast"></div>
+    <div class="toast-container"><div class="toast-msg" id="toast"></div></div>
 
     <script>
-        (function() {
-            // Mobile menu
-            var menuBtn = document.getElementById('menuBtn');
-            var navLinks = document.getElementById('navLinks');
-            menuBtn.addEventListener('click', function() {
-                navLinks.classList.toggle('open');
-                menuBtn.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
-            });
-            navLinks.querySelectorAll('a').forEach(function(a) {
-                a.addEventListener('click', function() { navLinks.classList.remove('open'); menuBtn.textContent = '☰'; });
-            });
+    (function() {
+        // ===== Canvas Background =====
+        var canvas = document.getElementById('bg-canvas');
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var particleCount = 50;
 
-            // Role toggle
-            var roleToggle = document.getElementById('roleToggle');
-            var body = document.body;
-            roleToggle.addEventListener('click', function(e) {
-                var btn = e.target.closest('.role-btn');
-                if (!btn) return;
-                var role = btn.dataset.role;
-                roleToggle.querySelectorAll('.role-btn').forEach(function(b) {
-                    b.className = 'role-btn';
-                });
-                if (role === 'painter') {
-                    btn.className = 'role-btn active-painter';
-                    body.className = 'role-painter';
-                } else {
-                    btn.className = 'role-btn active-hunter';
-                    body.className = 'role-hunter';
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        for (var i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5 + 0.5,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                alpha: Math.random() * 0.5 + 0.2,
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0,230,118,' + p.alpha + ')';
+                ctx.fill();
+            }
+            // Draw connections
+            for (var i = 0; i < particles.length; i++) {
+                for (var j = i + 1; j < particles.length; j++) {
+                    var dx = particles[i].x - particles[j].x;
+                    var dy = particles[i].y - particles[j].y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = 'rgba(0,230,118,' + (0.06 * (1 - dist / 120)) + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
                 }
-                var msg = role === 'painter' ? '🎨 Switched to Painter view' : '🔫 Switched to Hunter view';
-                showToast(msg);
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // ===== Role System =====
+        var currentRole = 'painter';
+        var painterTips = document.getElementById('painterTips');
+        var hunterTips = document.getElementById('hunterTips');
+
+        function setRole(role) {
+            currentRole = role;
+            // Update all role pills
+            document.querySelectorAll('.role-pill').forEach(function(pill) {
+                pill.querySelectorAll('button').forEach(function(btn) {
+                    btn.className = btn.dataset.role === role ? 'active-' + role : '';
+                });
             });
+            // Toggle tips
+            if (painterTips && hunterTips) {
+                painterTips.style.display = role === 'painter' ? 'grid' : 'none';
+                hunterTips.style.display = role === 'hunter' ? 'grid' : 'none';
+            }
+            // Toggle tip card borders via CSS class on sections
+            document.body.setAttribute('data-role', role);
+            showToast(role === 'painter' ? '🎨 Painter view — hiding & camo tips' : '🔫 Hunter view — detection & kill tips');
+        }
 
-            // Toast
-            var toastTimer;
-            window.showToast = function(msg) {
-                var toast = document.getElementById('toast');
-                toast.textContent = msg;
-                toast.classList.add('show');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2000);
-            };
-
-            // Nav shadow
-            var nav = document.getElementById('nav');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 10) nav.style.boxShadow = '0 2px 24px rgba(0,0,0,0.4)';
-                else nav.style.boxShadow = '';
+        document.querySelectorAll('.role-pill').forEach(function(pill) {
+            pill.addEventListener('click', function(e) {
+                var btn = e.target.closest('button');
+                if (!btn) return;
+                setRole(btn.dataset.role);
             });
+        });
 
-            console.log('🦎 MECCA CHAMELEON Strategy Guide MVP ready');
-            console.log('💡 Click the role toggle at the top to switch Painter / Hunter');
-        })();
+        // ===== Mobile Sidebar =====
+        var menuBtn = document.getElementById('menuBtn');
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar() { sidebar.classList.add('mobile-open'); overlay.classList.add('open'); }
+        function closeSidebar() { sidebar.classList.remove('mobile-open'); overlay.classList.remove('open'); }
+
+        menuBtn.addEventListener('click', openSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        sidebar.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+                if (window.innerWidth <= 1024) closeSidebar();
+            });
+        });
+
+        // Active sidebar link on scroll
+        var sections = document.querySelectorAll('section[id]');
+        var sidebarLinks = sidebar.querySelectorAll('a[href^="#"]');
+
+        window.addEventListener('scroll', function() {
+            var scrollY = window.scrollY + 120;
+            var current = '';
+            sections.forEach(function(section) {
+                if (section.offsetTop <= scrollY) current = section.id;
+            });
+            sidebarLinks.forEach(function(link) {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            });
+        });
+
+        // ===== Map Card Selection =====
+        window.toggleMapCard = function(card) {
+            var wasSelected = card.classList.contains('selected');
+            document.querySelectorAll('.map-card-pro').forEach(function(c) { c.classList.remove('selected'); });
+            if (!wasSelected) {
+                card.classList.add('selected');
+                var mapName = card.querySelector('h3').textContent;
+                showToast('🗺️ ' + mapName + ' selected — zones highlighted');
+            }
+        };
+
+        // ===== Search =====
+        var searchInput = document.getElementById('searchInput');
+        var searchIndex = {
+            'pose': '#tierlist', 'poses': '#tierlist', 'tier': '#tierlist', 'curl': '#tierlist',
+            'backbend': '#tierlist', 'slanted': '#tierlist', 'starfish': '#tierlist', 't-pose': '#tierlist', 'fold': '#tierlist',
+            'map': '#maps', 'maps': '#maps', 'indoor': '#maps', 'sugarland': '#maps', 'penguin': '#maps', 'backrooms': '#maps',
+            'hotspot': '#maps', 'hiding': '#maps',
+            'key': '#keybinds', 'keybind': '#keybinds', 'keys': '#keybinds', 'shortcut': '#keybinds', 'control': '#keybinds',
+            'mode': '#modes', 'modes': '#modes', 'normal': '#modes', 'infection': '#modes', 'double': '#modes', 'chicken': '#modes',
+            'tip': '#tips', 'tips': '#tips', 'tactic': '#tips', 'strategy': '#tips', 'advanced': '#tips',
+            'cheat': '#cheatsheet', 'cheatsheet': '#cheatsheet', 'quick': '#cheatsheet', 'reference': '#cheatsheet',
+            'paint': '#tips', 'painter': '#tips', 'hunter': '#tips', 'hunt': '#tips', 'shoot': '#tips',
+            'shadow': '#keybinds', 'roughness': '#tips', 'clone': '#tips', 'silhouette': '#tips',
+        };
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = searchInput.value.toLowerCase().trim();
+                var target = null;
+                for (var key in searchIndex) {
+                    if (q.includes(key) || key.includes(q)) { target = searchIndex[key]; break; }
+                }
+                if (target) {
+                    document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+                    showToast('🔍 Jumped to: ' + target.replace('#', '').replace('tierlist','Tier List').replace('cheatsheet','Cheat Sheet'));
+                } else if (q) {
+                    showToast('🔍 No match — try: pose, map, keybind, mode, tip, cheat');
+                }
+            }
+        });
+
+        // ===== Toast =====
+        var toastTimer;
+        window.showToast = function(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2200);
+        };
+
+        console.log('%c🦎 MECCA CHAMELEON Pro Guide %c v2.0',
+            'font-size:1.2em;font-weight:700;', 'color:#8E8EA8;');
+        console.log('%cFeatures: Tier List | Map Explorer | Role Toggle | Cheat Sheet | Search | Particle BG',
+            'color:#5C5C78;');
+    })();
     </script>
 </body>
 </html>
